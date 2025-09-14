@@ -7,9 +7,15 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
 import "./globals.css"
 
+// 🔹 Metadata for favicon + title + slogan
 export const metadata: Metadata = {
-  title: "NaviSafe - Smart Tourist Safety System",
-  description: "Smart Tourist Safety Monitoring & Incident Response System",
+  title: "NaviSafe – Navigate Safely, Travel Freely", // site name + slogan
+  description: "Tourist safety app with real-time GPS tracking and geofencing",
+  icons: {
+    icon: "/favicon.ico", // make sure favicon.ico is inside /public
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico", // iOS support
+  },
   generator: "v0.app",
 }
 
@@ -22,7 +28,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
         <Suspense fallback={null}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
           </ThemeProvider>
         </Suspense>
