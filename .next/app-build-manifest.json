@@ -1,0 +1,48 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-7ab3b6b7354f46e2.js",
+      "static/chunks/fd9d1056-3750f1c68fb99acb.js",
+      "static/chunks/117-280b9c9576cb8057.js",
+      "static/chunks/main-app-e2d570c7c077834d.js",
+      "static/chunks/app/_not-found/page-eb3b180e2964d882.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-7ab3b6b7354f46e2.js",
+      "static/chunks/fd9d1056-3750f1c68fb99acb.js",
+      "static/chunks/117-280b9c9576cb8057.js",
+      "static/chunks/main-app-e2d570c7c077834d.js",
+      "static/css/13259dc9ccfa6acd.css",
+      "static/css/2b1fe6f0baea9722.css",
+      "static/chunks/app/layout-017068f974d8531b.js"
+    ],
+    "/blockchain-demo/page": [
+      "static/chunks/webpack-7ab3b6b7354f46e2.js",
+      "static/chunks/fd9d1056-3750f1c68fb99acb.js",
+      "static/chunks/117-280b9c9576cb8057.js",
+      "static/chunks/main-app-e2d570c7c077834d.js",
+      "static/chunks/3a91511d-c71772ed91eb9e91.js",
+      "static/chunks/551-c324b92211d1a228.js",
+      "static/chunks/135-c9dc73b9adcded02.js",
+      "static/chunks/app/blockchain-demo/page-5dd9d93a7effe958.js"
+    ],
+    "/blockchain-demo/loading": [
+      "static/chunks/webpack-7ab3b6b7354f46e2.js",
+      "static/chunks/fd9d1056-3750f1c68fb99acb.js",
+      "static/chunks/117-280b9c9576cb8057.js",
+      "static/chunks/main-app-e2d570c7c077834d.js",
+      "static/chunks/app/blockchain-demo/loading-0a28be0768171a5d.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-7ab3b6b7354f46e2.js",
+      "static/chunks/fd9d1056-3750f1c68fb99acb.js",
+      "static/chunks/117-280b9c9576cb8057.js",
+      "static/chunks/main-app-e2d570c7c077834d.js",
+      "static/chunks/3a91511d-c71772ed91eb9e91.js",
+      "static/chunks/551-c324b92211d1a228.js",
+      "static/chunks/588-f80718e4ea544714.js",
+      "static/chunks/135-c9dc73b9adcded02.js",
+      "static/chunks/app/page-507408a8b7ad60eb.js"
+    ]
+  }
+}

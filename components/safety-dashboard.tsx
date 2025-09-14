@@ -29,6 +29,7 @@ import { AnonymousReportingPanel } from "@/components/anonymous-reporting-panel"
 import VirtualGuardianChat from "@/components/virtual-guardian-chat"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useGPSTracking } from "@/hooks/use-gps-tracking"
+import { useReverseGeocoding } from "@/hooks/use-reverse-geocoding"
 
 interface SafetyDashboardProps {
   userInfo: any
@@ -174,6 +175,12 @@ export function SafetyDashboard({ userInfo, tripDetails }: SafetyDashboardProps)
     trackingInterval: 5000,
   })
 
+  const {
+    address: dynamicAddress,
+    isLoading: addressLoading,
+    error: addressError,
+    reverseGeocode,
+  } = useReverseGeocoding()
   const [currentLocation, setCurrentLocation] = useState({ lat: 28.6139, lng: 77.209 })
   const [isInSafeZone, setIsInSafeZone] = useState(true)
   const [isInRestrictedZone, setIsInRestrictedZone] = useState(false)
@@ -197,6 +204,7 @@ export function SafetyDashboard({ userInfo, tripDetails }: SafetyDashboardProps)
     { name: "Tourist Helpline", number: "1363" },
     { name: "Medical Emergency", number: "108" },
   ])
+  const [displayAddress, setDisplayAddress] = useState<string>("")
 
   useEffect(() => {
     console.log("[v0] Starting GPS tracking on dashboard mount")
@@ -213,8 +221,12 @@ export function SafetyDashboard({ userInfo, tripDetails }: SafetyDashboardProps)
       console.log("[v0] GPS position received:", currentPosition)
       setCurrentLocation({ lat: currentPosition.lat, lng: currentPosition.lng })
       setLastUpdate(new Date())
+
+      reverseGeocode(currentPosition).then((address) => {
+        setDisplayAddress(address)
+      })
     }
-  }, [currentPosition])
+  }, [currentPosition, reverseGeocode])
 
   useEffect(() => {
     if (gpsScore !== undefined) {
@@ -227,6 +239,10 @@ export function SafetyDashboard({ userInfo, tripDetails }: SafetyDashboardProps)
       console.log("[v0] Manual location change:", newLocation)
       simulatePositionUpdate(newLocation.lat, newLocation.lng)
       setLastUpdate(new Date())
+
+      reverseGeocode(newLocation).then((address) => {
+        setDisplayAddress(address)
+      })
 
       const safeZones = [
         { lat: 28.6139, lng: 77.209, radius: 0.01, name: "Connaught Place Safe Zone" },
@@ -262,7 +278,7 @@ export function SafetyDashboard({ userInfo, tripDetails }: SafetyDashboardProps)
         })
       }
     },
-    [simulatePositionUpdate, isInSafeZone, isInRestrictedZone],
+    [simulatePositionUpdate, isInSafeZone, isInRestrictedZone, reverseGeocode],
   )
 
   const handleSafeScoreChange = useCallback(
@@ -304,6 +320,19 @@ export function SafetyDashboard({ userInfo, tripDetails }: SafetyDashboardProps)
   }
 
   const getCurrentAddress = () => {
+    if (addressLoading) {
+      return "Fetching address…"
+    }
+
+    if (addressError) {
+      return "Unable to fetch address"
+    }
+
+    if (displayAddress) {
+      return displayAddress
+    }
+
+    // Fallback to static address logic
     if (currentLocation.lat > 28.615 && currentLocation.lng > 77.21) {
       return "Red Fort Area, Chandni Chowk, New Delhi 110006"
     } else if (currentLocation.lat < 28.61) {
@@ -638,16 +667,26 @@ export function SafetyDashboard({ userInfo, tripDetails }: SafetyDashboardProps)
                 <div className="grid grid-cols-2 gap-4">
                   <div className="hover:bg-muted/50 p-2 rounded transition-colors duration-300">
                     <span className="text-muted-foreground">Latitude:</span>
-                    <p className="font-mono font-medium">{currentLocation.lat.toFixed(6)}</p>
+                    <p className="font-mono font-medium text-foreground">{currentLocation.lat.toFixed(6)}</p>
                   </div>
                   <div className="hover:bg-muted/50 p-2 rounded transition-colors duration-300">
                     <span className="text-muted-foreground">Longitude:</span>
-                    <p className="font-mono font-medium">{currentLocation.lng.toFixed(6)}</p>
+                    <p className="font-mono font-medium text-foreground">{currentLocation.lng.toFixed(6)}</p>
                   </div>
                 </div>
                 <div className="hover:bg-muted/50 p-2 rounded transition-colors duration-300">
                   <span className="text-muted-foreground">Address:</span>
-                  <p className="font-medium">{getCurrentAddress()}</p>
+                  <p
+                    className={`font-medium text-foreground ${addressLoading ? "animate-pulse" : ""} ${addressError ? "text-destructive" : ""}`}
+                  >
+                    {getCurrentAddress()}
+                  </p>
+                  {addressLoading && (
+                    <div className="flex items-center mt-1">
+                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-primary mr-2"></div>
+                      <span className="text-xs text-muted-foreground">Fetching location details...</span>
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-border">
                   <span className="text-muted-foreground">Zone Status:</span>
