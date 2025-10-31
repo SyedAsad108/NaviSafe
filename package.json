@@ -53,7 +53,7 @@
     "leaflet": "latest",
     "lucide-react": "^0.454.0",
     "mocha": "latest",
-    "next": "14.2.16",
+    "next": "^14.2.33",
     "next-themes": "latest",
     "react": "^18",
     "react-day-picker": "latest",
